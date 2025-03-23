@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Vista para mostrar la imagen seleccionada -->
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:background="#CCCCCC"
+        android:scaleType="centerCrop" />
+
+    <!-- Botón para seleccionar imagen -->
+    <Button
+        android:id="@+id/btnimagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Seleccionar Imagen" />
+
+    <!-- Campo para el Nombre del Producto -->
+    <EditText
+        android:id="@+id/txtnombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/design_default_color_background"
+        android:hint="Nombre del producto" />
+
+    <!-- Campo para el Precio del Producto -->
+    <EditText
+        android:id="@+id/txtprecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Precio"
+        android:inputType="numberDecimal" />
+
+    <!-- Spinner para la categoría -->
+    <Spinner
+        android:id="@+id/spcategoria"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Botón para guardar -->
+    <Button
+        android:id="@+id/btnguardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Guardar"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
