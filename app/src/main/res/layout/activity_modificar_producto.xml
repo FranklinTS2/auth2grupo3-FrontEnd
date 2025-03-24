@@ -30,7 +30,7 @@
 
         <!-- Campo para el Nombre del Producto -->
         <EditText
-            android:id="@+id/txtId"
+            android:id="@+id/textIdM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"

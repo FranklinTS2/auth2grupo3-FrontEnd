@@ -47,12 +47,14 @@ public class ModificarProducto extends AppCompatActivity {
             txtprecio = findViewById(R.id.txtprecio);
             imageView = findViewById(R.id.imagen);
             spcategoria = findViewById(R.id.spcategoria);
+            txtId = findViewById(R.id.textIdM);
 
             btnModificar = (Button) findViewById(R.id.btnModificar);
 
 
-            txtId = (EditText) findViewById(R.id.txtId);
+
             txtId.setEnabled(false);
+
 
             // Configurar categorías en el Spinner
             List<String> categorias = Arrays.asList("Electrónica", "Ropa", "Hogar", "Deportes");
@@ -84,6 +86,7 @@ public class ModificarProducto extends AppCompatActivity {
         String imagenProducto = previousIntent.getStringExtra("Imagen");
 
         int categoriaSeleccionada = adapter.getPosition(categoriaProducto);
+        txtId.setText(idProducto);
         txtnombre.setText(nombreProducto);
         txtprecio.setText(precioProducto);
         imageView.setImageBitmap(imageUtils.decodeFromBase64(imagenProducto));

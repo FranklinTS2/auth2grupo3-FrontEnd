@@ -83,9 +83,9 @@ public class listaProductos extends AppCompatActivity {
                 Intent modificar = new Intent(getApplicationContext(), ModificarProducto.class);
 
 
-                modificar.putExtra("Id",lista.getId());
+                modificar.putExtra("Id",String.valueOf(lista.getId()));
                 modificar.putExtra("Nombre",lista.getNombre());
-                modificar.putExtra("Precio",lista.getPrecio());
+                modificar.putExtra("Precio",String.valueOf(lista.getPrecio()));
                 modificar.putExtra("Categoria",lista.getCategoria());
                 modificar.putExtra("Imagen",lista.getImagen());
                 startActivity(modificar);

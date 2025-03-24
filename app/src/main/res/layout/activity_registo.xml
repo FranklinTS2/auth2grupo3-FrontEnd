@@ -70,7 +70,7 @@
         android:id="@+id/btnguardar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ingresar"
+        android:text="Guardar"
         android:backgroundTint="@color/white"
         android:textColor="#001a00"
         android:padding="18dp"
