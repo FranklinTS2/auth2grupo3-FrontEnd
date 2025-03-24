@@ -30,8 +30,9 @@ public class Registro extends AppCompatActivity {
         txtprecio = findViewById(R.id.txtprecio);
         imageView = findViewById(R.id.imagen);
         spcategoria = findViewById(R.id.spcategoria);
-        Button btnSeleccionarImagen = findViewById(R.id.btnimagen);
+
         Button btnGuardar = findViewById(R.id.btnguardar);
+        Button btnListado = findViewById(R.id.btnListado);
 
         // Configurar categorías en el Spinner
         List<String> categorias = Arrays.asList("Electrónica", "Ropa", "Hogar", "Deportes");
@@ -40,10 +41,20 @@ public class Registro extends AppCompatActivity {
         spcategoria.setAdapter(adapter);
 
         // Acción para seleccionar imagen
-        btnSeleccionarImagen.setOnClickListener(v -> seleccionarImagen());
+        imageView.setOnClickListener(v -> seleccionarImagen());
 
         // Acción para guardar producto
         btnGuardar.setOnClickListener(v -> guardarProducto());
+
+        btnListado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(),listaProductos.class);
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     // Método para abrir la galería y seleccionar una imagen
