@@ -14,15 +14,16 @@ import androidx.annotation.Nullable;
 import com.example.auth2grupo3.R;
 import com.example.auth2grupo3.funciones.imageUtils;
 import com.example.auth2grupo3.modelo.Modelo;
+import com.example.auth2grupo3.modelo.ProductoModel;
 
 import java.util.List;
 
-public class listAdapter extends ArrayAdapter<Modelo> {
+public class listAdapter extends ArrayAdapter<ProductoModel> {
 
     private List<Modelo> myList;
     private Context myContext;
     private int resourceLayout;
-    public listAdapter(@NonNull Context context, int resource, List<Modelo> objects) {
+    public listAdapter(@NonNull Context context, int resource, List<ProductoModel> objects) {
         super(context, resource, objects);
 
     }
@@ -30,14 +31,14 @@ public class listAdapter extends ArrayAdapter<Modelo> {
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        Modelo modelo = getItem(position);
+        ProductoModel modelo = getItem(position);
 
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_row,parent,false);
         }
 
         ImageView imagen = convertView.findViewById(R.id.imageView);
-        imagen.setImageBitmap(imageUtils.decodeFromBase64(modelo.getImagen()));
+        imagen.setImageBitmap(imageUtils.decodeFromBase64(modelo.getImagenProducto()));
 
         TextView id = convertView.findViewById(R.id.textId);
         id.setText(String.valueOf(modelo.getId()));

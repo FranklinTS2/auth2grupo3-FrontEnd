@@ -124,6 +124,8 @@ public class ModificarProducto extends AppCompatActivity {
             return;
         }
 
+
+
         // Aquí podrías guardar los datos en una base de datos o enviarlos a un servidor
         Toast.makeText(this, "Producto guardado correctamente", Toast.LENGTH_SHORT).show();
     }
