@@ -20,11 +20,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.auth2grupo3.RetroFit.ApiService;
+import com.example.auth2grupo3.RetroFit.RetroFitClient;
 import com.example.auth2grupo3.funciones.imageUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ModificarProducto extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -33,12 +40,18 @@ public class ModificarProducto extends AppCompatActivity {
     private ImageView imageView;
     private Spinner spcategoria;
     private Uri imagenUri;
+    private String imagen64;
     ArrayAdapter<String> adapter;
 
+    private final ApiService apiService = RetroFitClient.getRetrofitInstance().create(ApiService.class);
+    String token;
+    ClientManager clientManager;
     private Button btnModificar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
+            clientManager =  new ClientManager(getApplicationContext());
+            token= "Bearer " + clientManager.getClientToken();
             super.onCreate(savedInstanceState);
 
             setContentView(R.layout.activity_modificar_producto);
@@ -106,6 +119,7 @@ public class ModificarProducto extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
                 imageView.setImageBitmap(bitmap);
+                imagen64 = imageUtils.encodeToBase64(bitmap);
                 imageView.setVisibility(View.VISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -122,11 +136,44 @@ public class ModificarProducto extends AppCompatActivity {
         if (nombre.isEmpty() || precio.isEmpty() || imagenUri == null) {
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
             return;
+        }else{
+            HashMap<String,String> body = new HashMap<>();
+            int id = Integer.parseInt(txtId.getText().toString());
+            body.put("nombre",nombre);
+            body.put("precio",precio);
+            body.put("categoria",categoria);
+            body.put("imagen",imagen64);
+
+            Call<String> call = apiService.actualizarProducto(token,id,body);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.code()==401){
+                        clientManager.clearClientData();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    if(response.isSuccessful()){
+                        String mensaje = response.body();
+                        runOnUiThread(() -> mostrarToast(mensaje));;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
         }
 
 
 
         // Aquí podrías guardar los datos en una base de datos o enviarlos a un servidor
         Toast.makeText(this, "Producto guardado correctamente", Toast.LENGTH_SHORT).show();
+    }
+
+    private void mostrarToast(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }

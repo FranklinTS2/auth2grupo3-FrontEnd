@@ -2,26 +2,19 @@ package com.example.auth2grupo3;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.auth2grupo3.RetroFit.ApiService;
 import com.example.auth2grupo3.RetroFit.RetroFitClient;
 import com.example.auth2grupo3.adaptador.listAdapter;
-import com.example.auth2grupo3.modelo.Modelo;
 import com.example.auth2grupo3.modelo.ProductoModel;
 
 import java.util.ArrayList;
@@ -34,11 +27,11 @@ import retrofit2.Response;
 public class listaProductos extends AppCompatActivity {
 
     private ListView myListView;
-    private List<ProductoModel> myLista = new ArrayList<ProductoModel>();
+    private List<ProductoModel> myLista = new ArrayList<>();
     private final ApiService apiService = RetroFitClient.getRetrofitInstance().create(ApiService.class);
     listAdapter mAdapter;
     ClientManager clientManager;
-    String token;
+    String token, mensaje;
     ProductoModel selectedProducto;
 
     @Override
@@ -91,8 +84,6 @@ public class listaProductos extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Aqui abriremos el intent para modificar
                 Intent modificar = new Intent(getApplicationContext(), ModificarProducto.class);
-
-
                 modificar.putExtra("Id",String.valueOf(lista.getId()));
                 modificar.putExtra("Nombre",lista.getNombre());
                 modificar.putExtra("Precio",String.valueOf(lista.getPrecio()));
@@ -142,7 +133,34 @@ public class listaProductos extends AppCompatActivity {
     }
 
     private void eliminarProducto(){
-        Toast.makeText(getApplicationContext(),"Respuesta a eliminar positiva",Toast.LENGTH_SHORT).show();
+        Call<String> call = apiService.eliminarProducto(token,selectedProducto.getId());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.code()==401){
+                    clientManager.clearClientData();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                if(response.isSuccessful()){
+                    mensaje = response.body();
+                    mAdapter.notifyDataSetChanged();
+                    runOnUiThread(() -> mostrarToast(mensaje));
+                    Log.d("Mensaje ", mensaje);
+                    finish();
+                }else{
+                    mensaje = response.body();
+                    runOnUiThread(() -> mostrarToast(mensaje));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Retrofit", "Fallo en la solicitud: " + t.getMessage());
+            }
+        });
+
     }
 
     private void llenarLista() {
@@ -150,10 +168,16 @@ public class listaProductos extends AppCompatActivity {
         call.enqueue(new Callback<List<ProductoModel>>() {
             @Override
             public void onResponse(Call<List<ProductoModel>> call, Response<List<ProductoModel>> response) {
+                if(response.code()==401){
+                    clientManager.clearClientData();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
                 if (response.body() != null) {
                     myLista.clear();
                     myLista.addAll(response.body());
-                        Log.d("Imagen?",myLista.get(1).getImagenProducto());
                     if (mAdapter == null) {
                         mAdapter = new listAdapter(getApplicationContext(), 0, myLista);
 
@@ -172,6 +196,8 @@ public class listaProductos extends AppCompatActivity {
             }
         });
     }
-
+    private void mostrarToast(String text){
+        Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
+    }
 }
 

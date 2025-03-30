@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         String token = clientManager.getClientToken();
 
         if (token != null && !token.trim().isEmpty()) {
-            Intent intent = new Intent(getApplicationContext(), Registro.class); // Asegúrate de que esta es la pantalla correcta
+            Intent intent = new Intent(getApplicationContext(), Registro.class);
             startActivity(intent);
             finish();
         }

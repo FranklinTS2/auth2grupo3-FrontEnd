@@ -3,7 +3,9 @@ package com.example.auth2grupo3.RetroFit;
 import com.example.auth2grupo3.modelo.ProductoModel;
 import com.example.auth2grupo3.modelo.UsuarioModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -31,12 +33,12 @@ public interface ApiService {
     );
 
     @POST("user/")
-    Call<Void> registrarUsuario();
+    Call<String> registrarUsuario(@Body Map<String, String> body);
 
     @POST("producto/")
-    Call<Void> registrarProducto(
+    Call<String> registrarProducto(
             @Header("Authorization") String token,
-            @Body ProductoModel productomodel
+            @Body Map<String, String> body
     );
 
     @GET("producto/")
@@ -49,8 +51,12 @@ public interface ApiService {
     Call<List<ProductoModel>> obtenerProductosPorNombre(@Path("nombre") String nombre);
 
     @PUT("producto/{id}")
-    Call<Void> actualizarContactos(@Path("id") int id,@Body ProductoModel productomodel);
+    Call<String> actualizarProducto(
+            @Header("Authorization") String token,
+            @Path("id") int id,
+            @Body HashMap<String,String> body
+    );
 
     @DELETE("producto/{id}")
-    Call<Void> eliminarProducto(@Path("id") int id);
+    Call<String> eliminarProducto(@Header("Authorization") String token,@Path("id") int id);
 }

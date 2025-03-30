@@ -36,9 +36,10 @@ public class listAdapter extends ArrayAdapter<ProductoModel> {
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_row,parent,false);
         }
+        String imagen64 = modelo.getImagenProducto();
 
         ImageView imagen = convertView.findViewById(R.id.imageView);
-        imagen.setImageBitmap(imageUtils.decodeFromBase64(modelo.getImagenProducto()));
+        imagen.setImageBitmap(imageUtils.decodeFromBase64(imagen64));
 
         TextView id = convertView.findViewById(R.id.textId);
         id.setText(String.valueOf(modelo.getId()));

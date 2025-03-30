@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroFitClient {
     private static Retrofit retrofit;
-    private static final String baseURL = "http://192.168.88.115:3000/api/";//IP de la computadora
+    private static final String baseURL = "http://16.16.2.196:3000/api/";//IP de la computadora
     public static Retrofit getRetrofitInstance() {
         if (retrofit==null){
             retrofit = new Retrofit.Builder()
